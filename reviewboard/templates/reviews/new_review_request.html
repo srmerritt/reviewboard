@@ -63,6 +63,11 @@
      {% endblocktrans %}
     </td>
    </tr>
+   <tr>
+     <td><label for="id_revision">{% trans "Git Revision" %}:</label></td>
+     <td>{{form.revision}}</td>
+     <td>{{form.revision.errors}}</td>
+    </tr>
    <tr class="row_changenum">
     <td><label for="id_changenum">{{form.changenum.label}}:</label></td>
     <td>{{form.changenum}}</td>

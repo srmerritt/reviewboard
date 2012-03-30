@@ -326,3 +326,5 @@ elif DEBUG:
 
 # Packages to unit test
 TEST_PACKAGES = ['reviewboard']
+
+NEW_REVIEW_REQUEST_WEB_HOOK = 'http://dev02.int.rdio:8083/get_test_results_for_patch'

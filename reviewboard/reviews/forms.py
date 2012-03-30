@@ -116,6 +116,12 @@ class NewReviewRequestForm(forms.Form):
 
     changenum = forms.IntegerField(label=_("Change Number"), required=False)
 
+    revision = forms.CharField(
+        label=_("Git Revision"),
+        required=False,
+        help_text=_("The revision this patch was diffed against. Assumes branch 'master'"),
+        widget=forms.TextInput(attrs={'size': '41'}))
+
     field_mapping = {}
 
     def __init__(self, user, local_site, *args, **kwargs):
@@ -165,6 +171,8 @@ class NewReviewRequestForm(forms.Form):
     def create(self, user, diff_file, parent_diff_file, local_site=None):
         repository = self.cleaned_data['repository']
         changenum = self.cleaned_data['changenum'] or None
+        revision = self.cleaned_data['revision'] or None
+        logging.info("Cleaned revision: %r" % (revision,))
 
         # It's a little odd to validate this here, but we want to have access to
         # the user.
@@ -192,10 +200,11 @@ class NewReviewRequestForm(forms.Form):
                 self.errors['changenum'] = forms.util.ErrorList([
                     'This change number is owned by another user.'])
                 raise OwnershipError()
-
+        
         try:
             review_request = ReviewRequest.objects.create(user, repository,
-                                                          changenum, local_site)
+                                                          changenum, local_site,
+                                                          revision=revision)
         except ChangeNumberInUseError:
             # The user is updating an existing review request, rather than
             # creating a new one.

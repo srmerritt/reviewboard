@@ -84,7 +84,7 @@ class ReviewRequestManager(ConcurrencyManager):
     def get_query_set(self):
         return ReviewRequestQuerySet(self.model)
 
-    def create(self, user, repository, changenum=None, local_site=None):
+    def create(self, user, repository, changenum=None, local_site=None, revision=None):
         """
         Creates a new review request, optionally filling in fields based off
         a change number.
@@ -106,7 +106,8 @@ class ReviewRequestManager(ConcurrencyManager):
             public=False,
             repository=repository,
             diffset_history=diffset_history,
-            local_site=local_site)
+            local_site=local_site,
+            revision=revision)
 
         if changenum:
             review_request.update_from_changenum(changenum)

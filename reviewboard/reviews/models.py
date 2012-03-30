@@ -346,6 +346,10 @@ class ReviewRequest(models.Model):
     local_site = models.ForeignKey(LocalSite, blank=True, null=True)
     local_id = models.IntegerField('site-local ID', blank=True, null=True)
 
+    # Rdio hack: store the git revision this diff was created against.
+    revision = models.CharField(_("revision"), max_length=42, blank=True,
+                                null=True, default=None)
+
     # Set this up with the ReviewRequestManager
     objects = ReviewRequestManager()
 
